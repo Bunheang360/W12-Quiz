@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../models/grocery.dart';
 
 class NewItem extends StatefulWidget {
@@ -14,7 +13,7 @@ class NewItem extends StatefulWidget {
 class _NewItemState extends State<NewItem> {
 
   // Default settings
-  static const defautName = "New grocery";
+  static const defaultName = "New grocery";
   static const defaultQuantity = 1;
   static const defaultCategory = GroceryCategory.fruit;
 
@@ -28,7 +27,7 @@ class _NewItemState extends State<NewItem> {
     super.initState();
 
     // Initialize intputs with default settings
-    _nameController.text = defautName;
+    _nameController.text = defaultName;
     _quantityController.text = defaultQuantity.toString();
   }
 
@@ -76,7 +75,14 @@ class _NewItemState extends State<NewItem> {
                 Expanded(
                   child: DropdownButtonFormField<GroceryCategory>(
                     initialValue: _selectedCategory,
-                    items: [  ],
+                    items: GroceryCategory.values.map(
+                          (category) {
+                        return DropdownMenuItem(
+                          value: category,
+                          child: Text(category.label )    ,
+                        );
+                      },
+                    ).toList(),
                     onChanged: (value) {
                       if (value != null) {
                         setState(() {
