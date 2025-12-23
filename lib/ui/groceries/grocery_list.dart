@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../groceries/grocery_form.dart';
+
 import '../../data/mock_grocery_repository.dart';
 import '../../models/grocery.dart';
+import './grocery_form.dart';
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -12,7 +13,9 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   void onCreate() {
-    // TODO-4 - Navigate to the form screen using the Navigator push
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const NewItem()));
   }
 
   @override
@@ -33,11 +36,7 @@ class _GroceryListState extends State<GroceryList> {
         title: const Text('Your Groceries'),
         actions: [
           IconButton(
-            onPressed: () async {
-              await Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const NewItem()),
-              );
-            },
+            onPressed: () => {onCreate()},
             icon: const Icon(Icons.add),
           ),
         ],
@@ -46,7 +45,6 @@ class _GroceryListState extends State<GroceryList> {
     );
   }
 }
-
 
 class GroceryItem extends StatelessWidget {
   const GroceryItem({super.key, required this.grocery});

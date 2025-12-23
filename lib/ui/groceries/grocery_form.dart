@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../models/grocery.dart';
 
 class NewItem extends StatefulWidget {
@@ -11,9 +12,8 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
-
   // Default settings
-  static const defaultName = "New grocery";
+  static const defautName = "New grocery";
   static const defaultQuantity = 1;
   static const defaultCategory = GroceryCategory.fruit;
 
@@ -27,7 +27,7 @@ class _NewItemState extends State<NewItem> {
     super.initState();
 
     // Initialize intputs with default settings
-    _nameController.text = defaultName;
+    _nameController.text = defautName;
     _quantityController.text = defaultQuantity.toString();
   }
 
@@ -45,7 +45,17 @@ class _NewItemState extends State<NewItem> {
   }
 
   void onAdd() {
-    // Will be implemented later - Create and return the new grocery
+    Grocery newGrocery = Grocery(
+      id: "1",
+      name: _nameController.text,
+      quantity: int.parse(_quantityController.text),
+      category: _selectedCategory,
+    );
+
+    //debug
+    print(newGrocery);
+
+    Navigator.pop<Grocery>(context, newGrocery);
   }
 
   @override
@@ -75,21 +85,23 @@ class _NewItemState extends State<NewItem> {
                 Expanded(
                   child: DropdownButtonFormField<GroceryCategory>(
                     initialValue: _selectedCategory,
-                    items: GroceryCategory.values.map(
-                          (category) {
-                        return DropdownMenuItem(
-                          value: category,
-                          child: Text(category.label )    ,
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (value) {
+                    onChanged: (GroceryCategory? value) {
                       if (value != null) {
                         setState(() {
                           _selectedCategory = value;
                         });
                       }
                     },
+                    items: GroceryCategory.values
+                        .map<DropdownMenuItem<GroceryCategory>>((
+                          GroceryCategory value,
+                        ) {
+                          return DropdownMenuItem<GroceryCategory>(
+                            value: value,
+                            child: Text(value.name.toUpperCase()),
+                          );
+                        })
+                        .toList(),
                   ),
                 ),
               ],
@@ -99,10 +111,7 @@ class _NewItemState extends State<NewItem> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(onPressed: onReset, child: const Text('Reset')),
-                ElevatedButton(
-                  onPressed: onAdd,
-                  child: const Text('Add Item'),
-                ),
+                ElevatedButton(onPressed: onAdd, child: const Text('Add Item')),
               ],
             ),
           ],
